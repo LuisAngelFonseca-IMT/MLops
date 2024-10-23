@@ -1,0 +1,40 @@
+data:
+  url: "https://archive.ics.uci.edu/static/public/878/cirrhosis+patient+survival+prediction+dataset-1.zip"
+  downloadPath: "data/download/"
+  basePath: "data/base/"
+  preprocesdePath: "data/preprocesed/"
+  cirrhosisNombreArchivo: "cirrhosis"
+
+modelos:
+  path: "modelos/"
+  grid_logistico: [{
+                        'penalty': ['l1', 'l2', 'elasticnet'],
+                        'C': [0.01, 0.1, 1, 10, 100],
+                        'solver': ['saga', 'lbfgs'],
+                        'max_iter': [200, 500],
+                        'tol': [1e-4, 1e-3],
+                        'multi_class': ['ovr', 'multinomial']
+                },
+                {
+                        'penalty': ['elasticnet'],
+                        'C': [2, 2.001, 2.003],
+                        'solver': ['saga'],
+                        'l1_ratio': [0, 0.5, 1],
+                        'class_weight': ['balanced']
+                }]
+  grid_xgboost: {
+        'n_estimators': [100, 200],
+        'learning_rate': [0.01, 0.05, 0.1],
+        'max_depth': [2, 3],
+        'subsample': [0.6, 0.8],
+        'colsample_bytree': [0.6, 0.8],
+        'min_child_weight': [1, 5],
+        'lambda': [1, 5],
+        'alpha': [0, 1],
+        'use_label_encoder':["False"]
+    }
+
+
+mlflow:
+  experiment_name: "Cirrhosis V1"
+  tracking_uri: "http://127.0.0.1:5000"

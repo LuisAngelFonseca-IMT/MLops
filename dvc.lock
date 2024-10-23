@@ -1,0 +1,295 @@
+schema: '2.0'
+stages:
+  download_data:
+    cmd: python ./refactoring/descargarDatadeZipACSV.py
+    deps:
+    - path: refactoring/descargarDatadeZipACSV.py
+      hash: md5
+      md5: 023c1a4e10c2c615fb2cb645ad365f1f
+      size: 997
+    - path: refactoring/loadParams.py
+      hash: md5
+      md5: f8d1ebd660f7f2e55128278ecc68ff47
+      size: 135
+    outs:
+    - path: data/download//cirrhosis.csv
+      hash: md5
+      md5: 230a3916291af39603e89042463349ef
+      size: 31860
+  load_Data:
+    cmd: python ./refactoring/cargarData.py
+    deps:
+    - path: ./refactoring/EDA.py
+      hash: md5
+      md5: f460a2a207c714768cb0fc5e6d6ffd74
+      size: 2731
+    - path: ./refactoring/cargarData.py
+      hash: md5
+      md5: 43e56392a9cdae6a3187c098c180cd2e
+      size: 695
+    - path: ./refactoring/loadParams.py
+      hash: md5
+      md5: f8d1ebd660f7f2e55128278ecc68ff47
+      size: 135
+    - path: data/download//cirrhosis.csv
+      hash: md5
+      md5: 230a3916291af39603e89042463349ef
+      size: 31860
+    outs:
+    - path: data/base//cirrhosis.csv
+      hash: md5
+      md5: 3c8f5d7d2d2d9c2b9c258b500705e11c
+      size: 34561
+  split_Data:
+    cmd: python ./refactoring/splitData.py
+    deps:
+    - path: ./refactoring/EDA.py
+      hash: md5
+      md5: f460a2a207c714768cb0fc5e6d6ffd74
+      size: 2731
+    - path: ./refactoring/splitData.py
+      hash: md5
+      md5: f899bf175ae1cbba1843c55417aae799
+      size: 1960
+    - path: data/base//cirrhosis.csv
+      hash: md5
+      md5: 3c8f5d7d2d2d9c2b9c258b500705e11c
+      size: 34561
+    - path: refactoring/loadParams.py
+      hash: md5
+      md5: f8d1ebd660f7f2e55128278ecc68ff47
+      size: 135
+    outs:
+    - path: data/base//X_test.csv
+      hash: md5
+      md5: eef6c7dbcab88cdd047988bdc34db171
+      size: 4708
+    - path: data/base//X_train.csv
+      hash: md5
+      md5: cf5d318a0fa40376a7c653e34e809c52
+      size: 22824
+    - path: data/base//X_val.csv
+      hash: md5
+      md5: fdfdd17fca7cd7544a3b769926ab21a1
+      size: 4892
+    - path: data/base//y_test.csv
+      hash: md5
+      md5: cbc9105a997a0c187974c751aee6261f
+      size: 201
+    - path: data/base//y_train.csv
+      hash: md5
+      md5: b41d85a8b547202555d4f30f8fa4152c
+      size: 901
+    - path: data/base//y_val.csv
+      hash: md5
+      md5: 575edc265d8f0c7cfe9f7fc2c2d8582c
+      size: 201
+  pre_process:
+    cmd: python ./refactoring/preprocess.py
+    deps:
+    - path: ./refactoring/preprocess.py
+      hash: md5
+      md5: a1c52df6267b243adb473ebeacc6053e
+      size: 3391
+    - path: data/base/X_test.csv
+      hash: md5
+      md5: eef6c7dbcab88cdd047988bdc34db171
+      size: 4708
+    - path: data/base/X_train.csv
+      hash: md5
+      md5: cf5d318a0fa40376a7c653e34e809c52
+      size: 22824
+    - path: data/base/X_val.csv
+      hash: md5
+      md5: fdfdd17fca7cd7544a3b769926ab21a1
+      size: 4892
+    - path: data/base/y_test.csv
+      hash: md5
+      md5: cbc9105a997a0c187974c751aee6261f
+      size: 201
+    - path: data/base/y_train.csv
+      hash: md5
+      md5: b41d85a8b547202555d4f30f8fa4152c
+      size: 901
+    - path: data/base/y_val.csv
+      hash: md5
+      md5: 575edc265d8f0c7cfe9f7fc2c2d8582c
+      size: 201
+    - path: refactoring/loadParams.py
+      hash: md5
+      md5: f8d1ebd660f7f2e55128278ecc68ff47
+      size: 135
+    outs:
+    - path: data/preprocesed/X_test.csv
+      hash: md5
+      md5: ea4af18b016253b9f75e780d47fc81c2
+      size: 18175
+    - path: data/preprocesed/X_train.csv
+      hash: md5
+      md5: e0bdf1581b82f531e15b3464d4189d7b
+      size: 83707
+    - path: data/preprocesed/X_val.csv
+      hash: md5
+      md5: 300770d4442d05f1b065cac7a734054d
+      size: 18139
+    - path: data/preprocesed/y_test.csv
+      hash: md5
+      md5: 8f2f5167a23ac8734296f2d3340ff770
+      size: 192
+    - path: data/preprocesed/y_train.csv
+      hash: md5
+      md5: 1da28e075f3aa8798461608b643ff976
+      size: 879
+    - path: data/preprocesed/y_val.csv
+      hash: md5
+      md5: c63eb493adf0302d6a8e5926bdbae343
+      size: 192
+  entrenar-modelos:
+    cmd: python ./refactoring/entrenarModelos.py
+    deps:
+    - path: ./refactoring/entrenarModelos.py
+      hash: md5
+      md5: afe7c2dd81e6af94827963e04624d761
+      size: 1898
+    - path: data/preprocesed/X_test.csv
+      hash: md5
+      md5: ea4af18b016253b9f75e780d47fc81c2
+      size: 18175
+    - path: data/preprocesed/y_test.csv
+      hash: md5
+      md5: 8f2f5167a23ac8734296f2d3340ff770
+      size: 192
+    - path: refactoring/loadParams.py
+      hash: md5
+      md5: f8d1ebd660f7f2e55128278ecc68ff47
+      size: 135
+    params:
+      params.yaml:
+        modelos:
+          path: modelos/
+          grid_logistico:
+          - penalty:
+            - l1
+            - l2
+            - elasticnet
+            C:
+            - 0.01
+            - 0.1
+            - 1
+            - 10
+            - 100
+            solver:
+            - saga
+            - lbfgs
+            max_iter:
+            - 200
+            - 500
+            tol:
+            - 0.0001
+            - 0.001
+            multi_class:
+            - ovr
+            - multinomial
+          - penalty:
+            - elasticnet
+            C:
+            - 2
+            - 2.001
+            - 2.003
+            solver:
+            - saga
+            l1_ratio:
+            - 0
+            - 0.5
+            - 1
+            class_weight:
+            - balanced
+          grid_xgboost:
+            n_estimators:
+            - 100
+            - 200
+            learning_rate:
+            - 0.01
+            - 0.05
+            - 0.1
+            max_depth:
+            - 2
+            - 3
+            subsample:
+            - 0.6
+            - 0.8
+            colsample_bytree:
+            - 0.6
+            - 0.8
+            min_child_weight:
+            - 1
+            - 5
+            lambda:
+            - 1
+            - 5
+            alpha:
+            - 0
+            - 1
+            use_label_encoder:
+            - 'False'
+    outs:
+    - path: modelos//modeloRegLog.sav
+      hash: md5
+      md5: 1c22933546874cae0457420843706bb4
+      size: 1643
+    - path: modelos//modeloXGBoost.sav
+      hash: md5
+      md5: 683129990444adee7fb4c71c9ca68fc7
+      size: 321226
+  evaluar-modelos:
+    cmd: python ./refactoring/evaluarModelos.py
+    deps:
+    - path: data/preprocesed/X_test.csv
+      hash: md5
+      md5: ea4af18b016253b9f75e780d47fc81c2
+      size: 18175
+    - path: data/preprocesed/X_train.csv
+      hash: md5
+      md5: e0bdf1581b82f531e15b3464d4189d7b
+      size: 83707
+    - path: data/preprocesed/X_val.csv
+      hash: md5
+      md5: 300770d4442d05f1b065cac7a734054d
+      size: 18139
+    - path: data/preprocesed/y_test.csv
+      hash: md5
+      md5: 8f2f5167a23ac8734296f2d3340ff770
+      size: 192
+    - path: data/preprocesed/y_train.csv
+      hash: md5
+      md5: 1da28e075f3aa8798461608b643ff976
+      size: 879
+    - path: data/preprocesed/y_val.csv
+      hash: md5
+      md5: c63eb493adf0302d6a8e5926bdbae343
+      size: 192
+    - path: modelos/modeloRegLog.sav
+      hash: md5
+      md5: e7f9862d960490dbbeeb7cc8a2d7b89e
+      size: 1636
+    - path: modelos/modeloXGBoost.sav
+      hash: md5
+      md5: 683129990444adee7fb4c71c9ca68fc7
+      size: 321226
+    - path: refactoring/loadParams.py
+      hash: md5
+      md5: f8d1ebd660f7f2e55128278ecc68ff47
+      size: 135
+    outs:
+    - path: docs/confusion_matrixes/LogRegresion_prueba.png
+      hash: md5
+      md5: 8bf45af31bd8f98a76efbac49f99ba66
+      size: 20507
+    - path: docs/confusion_matrixes/XGBoost_prueba.png
+      hash: md5
+      md5: 36cbef082c455ee71146f75ba9f71640
+      size: 21181
+    - path: metricas.json
+      hash: md5
+      md5: 4c8f4d048ef03bdd0afec38a87395bc0
+      size: 1162

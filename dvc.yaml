@@ -1,0 +1,83 @@
+stages:
+  download_data:
+    cmd: python ./refactoring/descargarDatadeZipACSV.py
+    deps:
+      - refactoring/descargarDatadeZipACSV.py
+      - refactoring/loadParams.py
+    outs:
+      - ${data.downloadPath}/${data.cirrhosisNombreArchivo}.csv
+  load_Data:
+    cmd: python ./refactoring/cargarData.py
+    deps:
+      - ./refactoring/cargarData.py
+      - ./refactoring/EDA.py
+      - ${data.downloadPath}/${data.cirrhosisNombreArchivo}.csv
+      - ./refactoring/loadParams.py
+    outs:
+      - ${data.basePath}/${data.cirrhosisNombreArchivo}.csv
+  split_Data:
+    cmd: python ./refactoring/splitData.py
+    deps: 
+      - ./refactoring/splitData.py
+      -  ${data.basePath}/${data.cirrhosisNombreArchivo}.csv
+      - ./refactoring/EDA.py
+      - refactoring/loadParams.py
+    outs:
+      - ${data.basePath}/X_test.csv
+      - ${data.basePath}/y_test.csv
+      - ${data.basePath}/X_val.csv
+      - ${data.basePath}/y_val.csv
+      - ${data.basePath}/X_train.csv
+      - ${data.basePath}/y_train.csv
+  pre_process:
+    cmd: python ./refactoring/preprocess.py
+    deps: 
+      - ./refactoring/preprocess.py
+      - ${data.basePath}X_test.csv
+      - ${data.basePath}y_test.csv
+      - ${data.basePath}X_val.csv
+      - ${data.basePath}y_val.csv
+      - ${data.basePath}X_train.csv
+      - ${data.basePath}y_train.csv
+      - refactoring/loadParams.py
+    outs:
+      - ${data.preprocesdePath}X_test.csv
+      - ${data.preprocesdePath}y_test.csv
+      - ${data.preprocesdePath}X_val.csv
+      - ${data.preprocesdePath}y_val.csv
+      - ${data.preprocesdePath}X_train.csv
+      - ${data.preprocesdePath}y_train.csv
+  entrenar-modelos:
+    cmd: python ./refactoring/entrenarModelos.py
+    deps: 
+      - ./refactoring/entrenarModelos.py
+      - ${data.preprocesdePath}X_test.csv
+      - ${data.preprocesdePath}y_test.csv
+      - refactoring/loadParams.py
+    params:
+      - modelos
+    outs:
+      - ${modelos.path}/modeloRegLog.sav
+      - ${modelos.path}/modeloXGBoost.sav
+  evaluar-modelos:
+    cmd: python ./refactoring/evaluarModelos.py
+    deps: 
+      - ${data.preprocesdePath}X_test.csv
+      - ${data.preprocesdePath}y_test.csv
+      - ${data.preprocesdePath}X_val.csv
+      - ${data.preprocesdePath}y_val.csv
+      - ${data.preprocesdePath}X_train.csv
+      - ${data.preprocesdePath}y_train.csv
+      - ${modelos.path}modeloRegLog.sav
+      - ${modelos.path}modeloXGBoost.sav
+      - refactoring/loadParams.py
+    metrics:
+      - metricas.json:
+          cache: false
+    plots:
+      - docs/confusion_matrixes/LogRegresion_prueba.png
+      - docs/confusion_matrixes/XGBoost_prueba.png
+
+
+
+ 
